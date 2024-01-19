@@ -1,0 +1,26 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Mono
+        run: sudo apt-get install -y mono-complete
+
+      - name: Restore dependencies
+        run: mono nuget.exe restore
+
+      - name: Build
+        run: msbuild /p:TargetFrameworkVersion=v3.5
+
+      - name: Test
+        run: mono ./path/to/testrunner.exe
